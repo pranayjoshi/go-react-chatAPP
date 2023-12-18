@@ -8,13 +8,13 @@ import { connect, sendMsg } from "../api";
 
 export default function Chat() {
   const [messages, setMessages] = useState([]);
-  useEffect(()=>{
+  useEffect(() => {
     connect((msg) => {
-      console.log("New Message")
+      console.log("New Message");
       setMessages((messages) => [...messages, msg]);
       console.log(messages);
     });
-  })
+  }, []); // Add this line
   function send(event) {
     if (event.keyCode === 13) {
       sendMsg(event.target.value);
