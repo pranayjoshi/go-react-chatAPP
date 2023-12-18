@@ -3,7 +3,24 @@
  * @see https://v0.dev/t/LOyl5Wee15h
  */
 
+import { useEffect, useState } from "react";
+import { connect, sendMsg } from "../api";
+
 export default function Chat() {
+  const [messages, setMessages] = useState([]);
+  useEffect(()=>{
+    connect((msg) => {
+      console.log("New Message")
+      setMessages((messages) => [...messages, msg]);
+      console.log(messages);
+    });
+  })
+  function send(event) {
+    if (event.keyCode === 13) {
+      sendMsg(event.target.value);
+      event.target.value = "";
+    }
+  }
   return (
     <div className="h-max w-full">
       <main className="container mx-auto p-6 bg-gray-100">
@@ -54,6 +71,7 @@ export default function Chat() {
                     </div>
                   </div>
                 </div>
+                {messages}
               </div>
             </div>
             <div className="flex w-full items-center space-x-2">
@@ -61,6 +79,7 @@ export default function Chat() {
                 className="flex h-10 w-full border bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                 placeholder="Type your message here..."
                 type="text"
+                onClick={(event) => send(event)}
               />
               <button className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-10 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white">
                 Send
