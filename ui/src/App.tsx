@@ -9,7 +9,7 @@ function App() {
 
   return (
     <>
-      <div className=" dark:bg-gray-900 bg-gray-100">
+      <div className="App dark:bg-gray-900 bg-gray-100">
         <BrowserRouter>
           <Routes>
           <Route path="/"  element={<Chat />} />

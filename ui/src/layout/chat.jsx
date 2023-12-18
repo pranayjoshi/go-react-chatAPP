@@ -14,7 +14,7 @@ export default function Chat() {
       setMessages((messages) => [...messages, msg]);
       console.log(messages);
     });
-  }, []); // Add this line
+}); // Add this line
   function send(event) {
     if (event.keyCode === 13) {
       sendMsg(event.target.value);
@@ -22,7 +22,7 @@ export default function Chat() {
     }
   }
   return (
-    <div className="h-max w-full">
+    <div className=" w-full">
       <main className="container mx-auto p-6 bg-gray-100">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
           <div className="col-span-2 bg-white rounded-lg shadow-lg p-6">
@@ -71,7 +71,20 @@ export default function Chat() {
                     </div>
                   </div>
                 </div>
-                {messages}
+                {messages.map((msg, index) => (
+  <div key={index} className="flex items-start space-x-4">
+    <span className="relative flex shrink-0 overflow-hidden w-10 h-10 rounded-full"></span>
+    <div>
+      <div className="flex items-center space-x-2">
+        <h3 className="font-bold text-indigo-600">{msg.user}</h3>
+        <div className="inline-flex items-center rounded-full border px-2.5 py-0.5 w-fit text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent hover:bg-primary/80 bg-blue-200 text-blue-800">
+          {msg.time}
+        </div>
+      </div>
+      <p className="text-gray-700">{msg.text}</p>
+    </div>
+  </div>
+))}
               </div>
             </div>
             <div className="flex w-full items-center space-x-2">
