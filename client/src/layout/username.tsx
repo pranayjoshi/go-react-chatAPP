@@ -1,15 +1,17 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Cookies from 'js-cookie';
+
 export default function Username() {
-    const [username, setUsername] = useState('');
+    const [username, setUsername] = useState(Cookies.get('username') || '');
     const navigate = useNavigate();
+
     const handleUsernameChange = (event:any) => {
         setUsername(event.target.value);
     };
 
     const handleSendClick = () => {
-        // Handle the send click here
-        
+        Cookies.set('username', username);
         navigate('/room');
         console.log(username);
     };
