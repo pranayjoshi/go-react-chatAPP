@@ -28,9 +28,9 @@ let sendMsg = (msg:any) => {
   let username = Cookies.get('username');
 console.log(username);
   const data = {
-    "Type": "message",
-    "Data": msg,
-    "user":
+    "type": "message",
+    "body": msg,
+    "user": username
   }
   socket.send(JSON.stringify(data));
 };
