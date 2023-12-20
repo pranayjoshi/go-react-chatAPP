@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"strings"
 
 	websocket "github.com/pranayjoshi/go-react-chatapp/pkg/WebSocket"
 )
@@ -31,6 +32,13 @@ func setupRoutes() {
 	type User struct {
 		Username string `json:"username"`
 	}
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		username := strings.TrimPrefix(r.URL.Path, "/")
+		if username != "" {
+			// Now you can use `username` to set the user
+			fmt.Fprintf(w, "Username: %s\n", username)
+		}
+	})
 	http.HandleFunc("/ws", func(w http.ResponseWriter, r *http.Request) {
 		var user User
 		err := json.NewDecoder(r.Body).Decode(&user)
