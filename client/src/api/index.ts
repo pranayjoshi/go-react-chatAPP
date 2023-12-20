@@ -3,7 +3,9 @@ import Cookies from 'js-cookie';
 var socket: WebSocket;
 
 let initializeSocket = () => {
-  socket = new WebSocket('ws://localhost:9000/ws');
+  if (!socket || socket.readyState === WebSocket.CLOSED) {
+    socket = new WebSocket('ws://localhost:9000/ws');
+  }
 }
 
 let connect = (cb:any) => {

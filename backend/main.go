@@ -17,6 +17,7 @@ func serveWS(pool *websocket.Pool, w http.ResponseWriter, r *http.Request, user 
 	if err != nil {
 		fmt.Fprintf(w, "%+v\n", err)
 	}
+	fmt.Println("Connection Established:   awawdwawd: ", user)
 	client := &websocket.Client{
 		Conn: conn,
 		Pool: pool,
@@ -31,12 +32,15 @@ func setupRoutes() {
 	type User struct {
 		Username string `json:"username"`
 	}
+	var user *User
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		username := &User{}
+		if user == nil {
+			user = &User{}
+		}
 		w.Header().Set("Access-Control-Allow-Origin", "*")
-		username.Username = strings.TrimPrefix(r.URL.Path, "/")
-		if username.Username != "" {
-			user := &User{Username: username.Username}
+		user.Username = strings.TrimPrefix(r.URL.Path, "/")
+		if user.Username != "" {
+			user := &User{Username: user.Username}
 			w.Header().Set("Content-Type", "application/json")
 			err := json.NewEncoder(w).Encode(user)
 			if err != nil {
@@ -44,12 +48,14 @@ func setupRoutes() {
 				return
 			}
 		}
+		fmt.Println("User: ", user.Username)
 
 	})
+
 	pool := websocket.NewPool()
 	go pool.Start()
 	http.HandleFunc("/ws", func(w http.ResponseWriter, r *http.Request) {
-		user := &User{}
+		fmt.Println("User: ", user.Username)
 		if user != nil {
 			serveWS(pool, w, r, user.Username)
 		} else {

@@ -10,19 +10,24 @@ import { connect, sendMsg, initializeSocket } from "../api";
 export default function Chat() {
   const [messages, setMessages] = useState([]);
   const [updates, setUpdates] = useState([]);
+  const [users, setUsers] = useState([]);
   useEffect(() => {
     initializeSocket();
     connect((msg) => {
       msg = JSON.parse(msg.data)
       if (msg.type == "message") {
-      setMessages((messages) => [...messages, msg]);
+        setMessages((messages) => [...messages, msg]);
       }
       if (msg.type == "updates") {
         setUpdates((updates) => [...updates, msg]);
+        console.log(updates);
+        if (msg.body == "joined") {
+          setUsers((users) => [...users, msg.user]);
+        }
       }
       console.log(messages);
     });
-  }, {}); // Add this line
+  }, []); // Add this line
 
   const [message, setMessage] = useState("");
   function returnMessage(message, index) {
