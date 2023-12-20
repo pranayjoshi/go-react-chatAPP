@@ -12,6 +12,14 @@ export default function Username() {
 
     const handleSendClick = () => {
         Cookies.set('username', username);
+        fetch(`/${username}`, {
+            method: 'GET',
+        })
+        .then(response => response.text())
+        .then(data => console.log(data))
+        .catch((error) => {
+          console.error('Error:', error);
+        });
         navigate('/room');
         console.log(username);
     };
