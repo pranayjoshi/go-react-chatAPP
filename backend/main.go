@@ -1,7 +1,6 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
 	"net/http"
 	"strings"
@@ -33,19 +32,15 @@ func setupRoutes() {
 		Username string `json:"username"`
 	}
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		username := strings.TrimPrefix(r.URL.Path, "/")
-		if username != "" {
+		var username *User
+		username.Username = strings.TrimPrefix(r.URL.Path, "/")
+		if username.Username != "" {
 			// Now you can use `username` to set the user
-			fmt.Fprintf(w, "Username: %s\n", username)
+			fmt.Fprintf(w, "Username: %s\n", username.Username)
 		}
 	})
 	http.HandleFunc("/ws", func(w http.ResponseWriter, r *http.Request) {
-		var user User
-		err := json.NewDecoder(r.Body).Decode(&user)
-		if err != nil {
-			http.Error(w, err.Error(), http.StatusBadRequest)
-			return
-		}
+		var user *User
 
 		// Now you can use `user.Username` to get the username
 		serveWS(pool, w, r, user.Username)
