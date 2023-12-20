@@ -10,18 +10,15 @@ export default function Username() {
         setUsername(event.target.value);
     };
 
-    const handleSendClick = () => {
+    const handleSendClick = async () => {
         Cookies.set('username', username);
-        fetch(`http://localhost:9000/${username}`, {
+        var response = await fetch(`http://localhost:9000/${username}`, {
             method: 'GET',
         })
-        .then(response => response.text())
-        .then(data => console.log(data))
-        .catch((error) => {
-          console.error('Error:', error);
-        });
-        navigate('/room');
+        var data = await response.text()
+        console.log(data)
         console.log(username);
+        navigate('/room');
     };
 
     return (

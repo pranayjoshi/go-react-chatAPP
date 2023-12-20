@@ -49,7 +49,7 @@ func setupRoutes() {
 	pool := websocket.NewPool()
 	go pool.Start()
 	http.HandleFunc("/ws", func(w http.ResponseWriter, r *http.Request) {
-		var user *User
+		user := &User{}
 		if user != nil {
 			serveWS(pool, w, r, user.Username)
 		} else {
