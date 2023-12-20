@@ -3,6 +3,7 @@ import Cookies from 'js-cookie';
 var socket = new WebSocket('ws://localhost:9000/ws');
 
 let connect = (cb:any) => {
+
   console.log("connecting")
 
   socket.onopen = () => {
@@ -35,4 +36,12 @@ console.log(username);
   socket.send(JSON.stringify(data));
 };
 
-export { connect, sendMsg };
+let sendNewUser = () => {
+  let username = Cookies.get('username');
+    const data = {
+        "usernamew": username
+    }
+    socket.send(JSON.stringify(data));
+}
+
+export { connect, sendMsg, sendNewUser };

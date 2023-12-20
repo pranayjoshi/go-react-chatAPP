@@ -4,7 +4,7 @@
  */
 
 import { useEffect, useState } from "react";
-import { connect, sendMsg } from "../api";
+import { connect, sendMsg, sendNewUser } from "../api";
 
 
 export default function Chat() {
@@ -12,6 +12,7 @@ export default function Chat() {
   const [updates, setUpdates] = useState([]);
   useEffect(() => {
     connect((msg) => {
+      sendNewUser();
       console.log("New Message");
       msg = JSON.parse(msg.data)
       if (msg.type == "message") {
