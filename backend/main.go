@@ -1,13 +1,14 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"net/http"
 
 	websocket "github.com/pranayjoshi/go-react-chatapp/pkg/WebSocket"
 )
 
-func serveWS(pool *websocket.Pool, w http.ResponseWriter, r *http.Request) {
+func serveWS(pool *websocket.Pool, w http.ResponseWriter, r *http.Request, user string) {
 	fmt.Println("websocket endpoint reached")
 
 	conn, err := websocket.Upgrade(w, r)
@@ -18,6 +19,7 @@ func serveWS(pool *websocket.Pool, w http.ResponseWriter, r *http.Request) {
 	client := &websocket.Client{
 		Conn: conn,
 		Pool: pool,
+		User: user,
 	}
 	pool.Register <- client
 	client.Read()
@@ -26,9 +28,19 @@ func serveWS(pool *websocket.Pool, w http.ResponseWriter, r *http.Request) {
 func setupRoutes() {
 	pool := websocket.NewPool()
 	go pool.Start()
-
+	type User struct {
+		Username string `json:"username"`
+	}
 	http.HandleFunc("/ws", func(w http.ResponseWriter, r *http.Request) {
-		serveWS(pool, w, r)
+		var user User
+		err := json.NewDecoder(r.Body).Decode(&user)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusBadRequest)
+			return
+		}
+
+		// Now you can use `user.Username` to get the username
+		serveWS(pool, w, r, user.Username)
 	})
 }
 

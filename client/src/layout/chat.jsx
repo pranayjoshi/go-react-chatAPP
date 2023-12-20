@@ -115,6 +115,38 @@ export default function Chat() {
                 </ul>
               </div>
             </div>
+            <div
+              className="rounded-lg border bg-card text-card-foreground shadow-lg mt-6"
+              data-v0-t="card"
+            >
+              <div className="flex flex-col space-y-1.5 p-6">
+                <h3 className="text-lg leading-6 font-medium text-indigo-700">
+                  Updates
+                </h3>
+              </div>
+              <div
+                className="h-full w-full rounded-[inherit]"
+                //   style="overflow: hidden scroll;"
+              >
+                <div
+              dir="ltr"
+              className="relative overflow-hidden h-96 mb-4 bg-gray-200 p-4 rounded-md overflow-y-auto mx-4"
+              // ="position: relative; --radix-scroll-area-corner-width: 0px; --radix-scroll-area-corner-height: 0px;"
+            >
+                {updates.map((msg, index) => (
+                  <div key={index} className="flex items-start space-x-4">
+                    <div>
+                      <div className="flex items-center space-x-2">
+                        <h3 className="font-bold text-indigo-600">
+                        {returnMessage(msg, "body")}
+                        </h3>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+            </div>
           </div>
         </div>
       </main>
