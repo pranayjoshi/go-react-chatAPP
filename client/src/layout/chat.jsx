@@ -22,7 +22,7 @@ export default function Chat() {
       }
       console.log(messages);
     });
-  }); // Add this line
+  }, {}); // Add this line
 
   const [message, setMessage] = useState("");
   function returnMessage(message, index) {
