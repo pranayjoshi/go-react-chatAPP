@@ -27,14 +27,13 @@ func serveWS(pool *websocket.Pool, w http.ResponseWriter, r *http.Request, user 
 }
 
 func setupRoutes() {
-	pool := websocket.NewPool()
-	go pool.Start()
+
 	type User struct {
 		Username string `json:"username"`
 	}
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		var username *User
-		fmt.Println("awdawdß")
+		username := &User{}
+		w.Header().Set("Access-Control-Allow-Origin", "*")
 		username.Username = strings.TrimPrefix(r.URL.Path, "/")
 		if username.Username != "" {
 			user := &User{Username: username.Username}
@@ -47,11 +46,17 @@ func setupRoutes() {
 		}
 
 	})
+	pool := websocket.NewPool()
+	go pool.Start()
 	http.HandleFunc("/ws", func(w http.ResponseWriter, r *http.Request) {
 		var user *User
-
-		// Now you can use `user.Username` to get the username
-		serveWS(pool, w, r, user.Username)
+		if user != nil {
+			serveWS(pool, w, r, user.Username)
+		} else {
+			// Handle the case where user is nil
+			http.Error(w, "User is not set", http.StatusBadRequest)
+			return
+		}
 	})
 }
 
