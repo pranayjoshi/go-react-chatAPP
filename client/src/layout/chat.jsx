@@ -142,6 +142,7 @@ export default function Chat() {
                         {returnMessage(msg, "body")}
                         </h3>
                       </div>
+                      <p className="text-gray-700">{returnMessage(msg, "user")}</p>
                     </div>
                   </div>
                 ))}
