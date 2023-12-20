@@ -17,7 +17,6 @@ func serveWS(pool *websocket.Pool, w http.ResponseWriter, r *http.Request, user 
 	if err != nil {
 		fmt.Fprintf(w, "%+v\n", err)
 	}
-	fmt.Println("Connection Established:   awawdwawd: ", user)
 	client := &websocket.Client{
 		Conn: conn,
 		Pool: pool,
@@ -48,7 +47,6 @@ func setupRoutes() {
 				return
 			}
 		}
-		fmt.Println("User: ", user.Username)
 
 	})
 
