@@ -1,8 +1,13 @@
 // api/index.js
 import Cookies from 'js-cookie';
-var socket = new WebSocket('ws://localhost:9000/ws');
+var socket: WebSocket;
+
+let initializeSocket = () => {
+  socket = new WebSocket('ws://localhost:9000/ws');
+}
 
 let connect = (cb:any) => {
+  
   
   console.log("connecting")
 
@@ -35,4 +40,4 @@ let sendMsg = (msg:any) => {
   socket.send(JSON.stringify(data));
 };
 
-export { connect, sendMsg };
+export { connect, sendMsg, initializeSocket };

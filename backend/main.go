@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"net/http"
 	"strings"
@@ -33,11 +34,18 @@ func setupRoutes() {
 	}
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		var username *User
+		fmt.Println("awdawdß")
 		username.Username = strings.TrimPrefix(r.URL.Path, "/")
 		if username.Username != "" {
-			// Now you can use `username` to set the user
-			fmt.Fprintf(w, "Username: %s\n", username.Username)
+			user := &User{Username: username.Username}
+			w.Header().Set("Content-Type", "application/json")
+			err := json.NewEncoder(w).Encode(user)
+			if err != nil {
+				http.Error(w, err.Error(), http.StatusInternalServerError)
+				return
+			}
 		}
+
 	})
 	http.HandleFunc("/ws", func(w http.ResponseWriter, r *http.Request) {
 		var user *User

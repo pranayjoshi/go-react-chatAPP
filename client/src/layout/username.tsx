@@ -12,7 +12,7 @@ export default function Username() {
 
     const handleSendClick = () => {
         Cookies.set('username', username);
-        fetch(`/${username}`, {
+        fetch(`http://localhost:9000/${username}`, {
             method: 'GET',
         })
         .then(response => response.text())

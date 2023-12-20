@@ -4,16 +4,15 @@
  */
 
 import { useEffect, useState } from "react";
-import { connect, sendMsg, sendNewUser } from "../api";
+import { connect, sendMsg, initializeSocket } from "../api";
 
 
 export default function Chat() {
   const [messages, setMessages] = useState([]);
   const [updates, setUpdates] = useState([]);
   useEffect(() => {
+    initializeSocket();
     connect((msg) => {
-      sendNewUser();
-      console.log("New Message");
       msg = JSON.parse(msg.data)
       if (msg.type == "message") {
       setMessages((messages) => [...messages, msg]);
