@@ -20,7 +20,7 @@ export default function Chat() {
       if (msg.type == "updates") {
         setUpdates((updates) => [...updates, msg]);
         console.log(updates);
-        if (msg.body == "New User Joined...") {
+        if (msg.body.includes("joined")) {
           setUsers((users) => [...users, msg.user]);
         } else {
           setUsers((users) => users.filter((user) => user != msg.user));
@@ -104,45 +104,19 @@ export default function Chat() {
               </div>
               <div className="p-6">
                 <ul className="divide-y divide-gray-200">
-                  <li className="py-4 flex">
-                    <span className="relative flex shrink-0 overflow-hidden w-10 h-10 rounded-full"></span>
-                    <div className="ml-3">
-                      <p className="text-sm font-medium text-gray-900">
-                        User Name 1
-                      </p>
-                    </div>
-                  </li>
-                  <li className="py-4 flex">
-                    <span className="relative flex shrink-0 overflow-hidden w-10 h-10 rounded-full"></span>
-                    <div className="ml-3">
-                      <p className="text-sm font-medium text-gray-900">
-                        User Name 2
-                      </p>
-                    </div>
-                  </li>
-                </ul>
-                <div
-                className="h-full w-full rounded-[inherit]"
-                //   style="overflow: hidden scroll;"
-              >
-                <div
-                  dir="ltr"
-                  className="relative overflow-hidden h-96 mb-4 bg-gray-200 p-4 rounded-md overflow-y-auto mx-4"
-                  // ="position: relative; --radix-scroll-area-corner-width: 0px; --radix-scroll-area-corner-height: 0px;"
-                >
                   {users.map((msg, index) => (
-                    <div key={index} className="flex items-start space-x-4">
-                      <div>
-                        <div className="flex items-center space-x-2">
-                          <h3 className="font-bold text-indigo-600">
-                            {msg}
-                          </h3>
-                        </div>
+                    <li className="py-4 flex">
+                      <span className="relative flex shrink-0 overflow-hidden w-10 h-10 rounded-full">
+                        <span className="absolute top-1 right-1 block w-3 h-3 rounded-full bg-green-600"></span>
+                      </span>
+                      <div className="ml-3">
+                        <p className="text-sm font-medium text-gray-900">
+                          {msg}
+                        </p>
                       </div>
-                    </div>
+                    </li>
                   ))}
-                </div>
-              </div>
+                </ul>
               </div>
             </div>
             <div
